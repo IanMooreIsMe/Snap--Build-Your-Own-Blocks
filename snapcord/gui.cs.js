@@ -103,8 +103,8 @@ IDE_Morph.prototype.createControlBar = function () {
         cb.projectButton.setRight(cb.cloudButton.left() - padding);
 
         this.refreshSlider();
+        this.updateLabel();
     };
-    cb.fixLayout();
 }
 
 IDE_Morph.prototype.superCreateSpriteBar = IDE_Morph.prototype.createSpriteBar;
