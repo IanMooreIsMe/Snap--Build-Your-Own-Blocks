@@ -1,4 +1,6 @@
-/*global IDE_Morph MenuMorph localize*/
+/*global modules IDE_Morph MenuMorph localize*/
+
+modules.snapcordGui = "2018-June-13";
 
 MenuMorph.prototype.removeItem = function (name) {
     this.items = this.items.filter(function (item) {

@@ -1,4 +1,6 @@
-/*global SpriteMorph*/
+/*global modules SpriteMorph*/
+
+modules.snapcordObjects = "2018-June-13";
 
 SpriteMorph.prototype.initDiscordBlocks = function () {
     var discordBlocks = {
