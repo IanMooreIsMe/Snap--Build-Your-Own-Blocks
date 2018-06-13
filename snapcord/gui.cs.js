@@ -6,7 +6,7 @@ MenuMorph.prototype.removeItem = function (name) {
     this.items = this.items.filter(function (item) {
         return item[0] !== name;
     });
-}
+};
 
 IDE_Morph.prototype.superProjectMenu = IDE_Morph.prototype.projectMenu;
 IDE_Morph.prototype.projectMenu = function () {
@@ -16,10 +16,10 @@ IDE_Morph.prototype.projectMenu = function () {
         pos = this.controlBar.projectButton.bottomLeft();
     menu.addLine();
     menu.addItem('Client settings...', 'editClientSettings');
-    menu.removeItem(localize("Costumes") + "...");
-    menu.removeItem(localize("Sounds") + "...");
+    menu.removeItem(localize('Costumes') + '...');
+    menu.removeItem(localize('Sounds') + '...');
     menu.popup(world, pos);
-}
+};
 
 IDE_Morph.prototype.editClientSettings = function () {
 
@@ -78,11 +78,11 @@ IDE_Morph.prototype.editClientSettings = function () {
 IDE_Morph.prototype.superCreateControlBar = IDE_Morph.prototype.createControlBar;
 IDE_Morph.prototype.createControlBar = function () {
     this.superCreateControlBar();
-    this.controlBar.stageSizeButton.hide();
-    this.controlBar.appModeButton.hide();
-    var padding = 5,
-        cb = this.controlBar;
+    var cb = this.controlBar;
+    cb.stageSizeButton.hide();
+    cb.appModeButton.hide();
     cb.fixLayout = function () {
+        var x, padding =5;
         x = this.right() - padding;
         [cb.stopButton, cb.pauseButton, cb.startButton, cb.steppingButton, cb.steppingSlider].forEach(
             function (button) {
@@ -105,7 +105,7 @@ IDE_Morph.prototype.createControlBar = function () {
         this.refreshSlider();
         this.updateLabel();
     };
-}
+};
 
 IDE_Morph.prototype.superCreateSpriteBar = IDE_Morph.prototype.createSpriteBar;
 IDE_Morph.prototype.createSpriteBar = function () {
@@ -114,7 +114,7 @@ IDE_Morph.prototype.createSpriteBar = function () {
     this.rotationStyleButtons.forEach(function (button) {
         button.hide();
     });
-}
+};
 
 IDE_Morph.prototype.superCreateCorral = IDE_Morph.prototype.createCorral;
 IDE_Morph.prototype.createCorral = function () {
@@ -133,7 +133,7 @@ IDE_Morph.prototype.createCorral = function () {
     };
     this.corral.fixLayout();
     this.corral.stageIcon.hide();
-}
+};
 
 IDE_Morph.prototype.superCreateCorralBar = IDE_Morph.prototype.createCorralBar;
 IDE_Morph.prototype.createCorralBar = function () {
@@ -141,8 +141,8 @@ IDE_Morph.prototype.createCorralBar = function () {
     var buttons = this.corralBar.children;
     buttons[0].hint = "create new Division";
     buttons[1].hide(); //paint new sprite
-    buttons[2].hide(); //new spirte from camera
-}
+    buttons[2].hide(); //new sprite from camera
+};
 
 IDE_Morph.prototype.superCreatePalette = IDE_Morph.prototype.createPalette;
 IDE_Morph.prototype.createPalette = function (forSearching) {
@@ -158,7 +158,7 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
                 droppedMorph.destroy();
                 myself.removeSprite(droppedMorph.object);
             } else {
-                myself.showMessage("You cannot delete the last Division!", 2);
+                myself.showMessage('You cannot delete the last Division!', 2);
                 droppedMorph.slideBackTo(hand.grabOrigin);
             }
         } else if (droppedMorph instanceof CostumeIconMorph) {
@@ -176,17 +176,18 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
             droppedMorph.perish();
         }
     };
-}
+};
 
 
 SpriteIconMorph.prototype.superUserMenu = SpriteIconMorph.prototype.userMenu;
 SpriteIconMorph.prototype.userMenu = function() {
     var menu = this.superUserMenu(),
         ide = this.parent.parent.parent.parent;
-    menu.removeItem("parent...");
-    if (ide.sprites.length() == 1) {
-        menu.removeItem("delete");
+    menu.removeItem('clone');
+    menu.removeItem('parent...');
+    if (ide.sprites.length() === 1) {
+        menu.removeItem('delete');
     }
     return menu;
-}
+};
 
