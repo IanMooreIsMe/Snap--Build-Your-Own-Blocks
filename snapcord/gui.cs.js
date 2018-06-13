@@ -1,3 +1,11 @@
+/*global IDE_Morph MenuMorph localize*/
+
+MenuMorph.prototype.removeItem = function (name) {
+    this.items = this.items.filter(function (item) {
+        return item[0] !== name;
+    });
+}
+
 IDE_Morph.prototype.superProjectMenu = IDE_Morph.prototype.projectMenu;
 IDE_Morph.prototype.projectMenu = function () {
     this.superProjectMenu();
@@ -6,9 +14,9 @@ IDE_Morph.prototype.projectMenu = function () {
         pos = this.controlBar.projectButton.bottomLeft();
     menu.addLine();
     menu.addItem('Client settings...', 'editClientSettings');
-    menu.items.splice(13, 2); //costumes and sounds
+    menu.removeItem(localize("Costumes") + "...");
+    menu.removeItem(localize("Sounds") + "...");
     menu.popup(world, pos);
-    console.log(menu);
 }
 
 IDE_Morph.prototype.editClientSettings = function () {
@@ -105,3 +113,78 @@ IDE_Morph.prototype.createSpriteBar = function () {
         button.hide();
     });
 }
+
+IDE_Morph.prototype.superCreateCorral = IDE_Morph.prototype.createCorral;
+IDE_Morph.prototype.createCorral = function () {
+    this.superCreateCorral();
+    var padding = 5;
+    this.corral.fixLayout = function () {
+        this.stageIcon.setCenter(this.center());
+        this.stageIcon.setLeft(this.left() + padding);
+        this.frame.setLeft(this.stageIcon.center() + padding);
+        this.frame.setExtent(new Point(
+            this.right() - this.frame.left(),
+            this.height()
+        ));
+        this.arrangeIcons();
+        this.refresh();
+    };
+    this.corral.fixLayout();
+    this.corral.stageIcon.hide();
+}
+
+IDE_Morph.prototype.superCreateCorralBar = IDE_Morph.prototype.createCorralBar;
+IDE_Morph.prototype.createCorralBar = function () {
+    this.superCreateCorralBar();
+    var buttons = this.corralBar.children;
+    buttons[0].hint = "create new Division";
+    buttons[1].hide(); //paint new sprite
+    buttons[2].hide(); //new spirte from camera
+}
+
+IDE_Morph.prototype.superCreatePalette = IDE_Morph.prototype.createPalette;
+IDE_Morph.prototype.createPalette = function (forSearching) {
+    var myself = this,
+        palette = this.superCreatePalette(forSearching);
+    palette.reactToDropOf = function (droppedMorph, hand) {
+        if (droppedMorph instanceof DialogBoxMorph) {
+            myself.world().add(droppedMorph);
+        } else if (droppedMorph instanceof SpriteMorph) {
+            myself.removeSprite(droppedMorph);
+        } else if (droppedMorph instanceof SpriteIconMorph) {
+            if (myself.sprites.length() !== 0) {
+                droppedMorph.destroy();
+                myself.removeSprite(droppedMorph.object);
+            } else {
+                myself.showMessage("You cannot delete the last Division!", 2);
+                droppedMorph.slideBackTo(hand.grabOrigin);
+            }
+        } else if (droppedMorph instanceof CostumeIconMorph) {
+            myself.currentSprite.wearCostume(null);
+            droppedMorph.perish();
+        } else if (droppedMorph instanceof BlockMorph) {
+            myself.stage.threads.stopAllForBlock(droppedMorph);
+            if (hand && hand.grabOrigin.origin instanceof ScriptsMorph) {
+                hand.grabOrigin.origin.clearDropInfo();
+                hand.grabOrigin.origin.lastDroppedBlock = droppedMorph;
+                hand.grabOrigin.origin.recordDrop(hand.grabOrigin);
+            }
+            droppedMorph.perish();
+        } else {
+            droppedMorph.perish();
+        }
+    };
+}
+
+
+SpriteIconMorph.prototype.superUserMenu = SpriteIconMorph.prototype.userMenu;
+SpriteIconMorph.prototype.userMenu = function() {
+    var menu = this.superUserMenu(),
+        ide = this.parent.parent.parent.parent;
+    menu.removeItem("parent...");
+    if (ide.sprites.length() == 1) {
+        menu.removeItem("delete");
+    }
+    return menu;
+}
+
