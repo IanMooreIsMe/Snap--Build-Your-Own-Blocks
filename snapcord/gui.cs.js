@@ -190,14 +190,37 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
 };
 
 SpriteIconMorph.prototype.superUserMenu = SpriteIconMorph.prototype.userMenu;
-SpriteIconMorph.prototype.userMenu = function() {
+SpriteIconMorph.prototype.userMenu = function () {
     var menu = this.superUserMenu(),
         ide = this.parent.parent.parent.parent;
     menu.removeItem('clone');
     menu.removeItem('parent...');
+    menu.removeItem('edit');
     if (ide.sprites.length() === 1) {
         menu.removeItem('delete');
     }
+    return menu;
+};
+
+SpriteMorph.prototype.superUserMenu = SpriteMorph.prototype.userMenu;
+SpriteMorph.prototype.userMenu = function () {
+    var menu = this.superUserMenu(),
+        ide = this.parent.parent;
+    console.log(this);
+    menu.removeItem('clone');
+    menu.removeItem('edit');
+    if (ide.sprites.length() === 1) {
+        menu.removeItem('delete');
+    }
+    return menu;
+};
+
+StageMorph.prototype.superUserMenu = StageMorph.prototype.userMenu;
+StageMorph.prototype.userMenu = function () {
+    var menu = this.superUserMenu();
+    menu.removeItem('edit');
+    menu.removeItem('pen trails');
+    menu.items.pop();
     return menu;
 };
 

@@ -136,6 +136,10 @@ SpriteMorph.prototype.initSnapcordPalette = function () {
     // Define palette
     SpriteMorph.prototype.snapcordPalette = {
         sensing: [
+            block('doAsk'),
+            watcherToggle('getLastAnswer'),
+            block('getLastAnswer'),
+            '-',
             block('reportKeyPressed'),
             '-',
             block('doResetTimer'),
