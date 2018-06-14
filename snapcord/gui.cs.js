@@ -206,7 +206,6 @@ SpriteMorph.prototype.superUserMenu = SpriteMorph.prototype.userMenu;
 SpriteMorph.prototype.userMenu = function () {
     var menu = this.superUserMenu(),
         ide = this.parent.parent;
-    console.log(this);
     menu.removeItem('clone');
     menu.removeItem('edit');
     if (ide.sprites.length() === 1) {

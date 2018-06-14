@@ -182,6 +182,12 @@ SpriteMorph.prototype.doStopThink = function () {
 }
 
 SpriteMorph.prototype.doSendWebhook = function (message, url) {
+    console.log(url);
+    if (message == "") {
+        throw new Error('message can not be empty!');
+    } else if (url == "") {
+        throw new Error('webook url can not be empty!');
+    }
     xhr = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
