@@ -2,6 +2,12 @@
 
 modules.snapcordGui = "2018-June-13";
 
+IDE_Morph.prototype.superInit = IDE_Morph.prototype.init;
+IDE_Morph.prototype.init = function () {
+    this.superInit();
+    this.currentCategory = 'control';
+} 
+
 MenuMorph.prototype.removeItem = function (name) {
     this.items = this.items.filter(function (item) {
         return item[0] !== name;
@@ -152,7 +158,12 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
         if (droppedMorph instanceof DialogBoxMorph) {
             myself.world().add(droppedMorph);
         } else if (droppedMorph instanceof SpriteMorph) {
-            myself.removeSprite(droppedMorph);
+            if (myself.sprites.length() !== 1) {
+                myself.removeSprite(droppedMorph);
+            } else {
+                myself.showMessage('You cannot delete the last Division!', 2);
+                droppedMorph.slideBackTo(hand.grabOrigin);
+            }
         } else if (droppedMorph instanceof SpriteIconMorph) {
             if (myself.sprites.length() !== 0) {
                 droppedMorph.destroy();
@@ -177,7 +188,6 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
         }
     };
 };
-
 
 SpriteIconMorph.prototype.superUserMenu = SpriteIconMorph.prototype.userMenu;
 SpriteIconMorph.prototype.userMenu = function() {
